@@ -3,5 +3,5 @@
 This repository contains the code for all exercises in the [DevOps Bootcamp](https://www.techworld-with-nana.com/devops-bootcamp)
 
 ## Index
-1. [Module 1 - OS & Linux Basics](02-os-linux/README.md)
+1. [OS & Linux Basics](02-os-linux/README.md)
 
