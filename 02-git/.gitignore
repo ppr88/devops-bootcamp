@@ -1,8 +1,2 @@
 .idea/*
 .DS_Store
-build.gradle
-.gradle/*
-gradle/*
-gradlew
-gradlew.bat
-settings.gradle
