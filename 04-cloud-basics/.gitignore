@@ -2,3 +2,4 @@
 app/node_modules
 *.DS_Store
 *tgz
+app/bootcamp-node-project-1.0.0.tgz
