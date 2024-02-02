@@ -8,6 +8,30 @@ group 'com.example'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 17
 
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact("build/libs/my-app-$version"+".jar") {
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name 'nexus'
+            url 'http://167.172.178.40:8081/repository/maven-snapshots/'
+            allowInsecureProtocol = true
+            credentials {
+                username project.nexusUser
+                password project.nexusPassword
+            }
+        }
+    }
+}
+
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
