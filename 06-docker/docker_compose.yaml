@@ -9,6 +9,8 @@ services:
         - MYSQL_DATABASE=mydb
         - MYSQL_USER=admin
         - MYSQL_PASSWORD=${MYSQL_PWD}
+      volumes:
+        - mysql-data:/var/lib/mysql
 
     phpmyadmin:
         image: phpmyadmin
@@ -22,7 +24,7 @@ services:
           - mysql
 
     java-app:
-      image: java-app:1
+      image: java-app:1.0
       ports:
         - "8080:8080"
       environment:
@@ -33,3 +35,6 @@ services:
       restart: always
       depends_on:
         - mysql
+volumes:
+  mysql-data:
+    driver: local
