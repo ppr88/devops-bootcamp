@@ -9,4 +9,4 @@ COPY ./app .
 
 RUN npm install
 
-ENTRYPOINT ["npm", "start"]
+CMD ["npm", "start"]
