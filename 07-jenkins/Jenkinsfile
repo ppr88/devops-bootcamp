@@ -5,11 +5,15 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building the application..."
+                sh "docker build -t ppr88/devops-bootcamp-module08:1.0 07-jenkins/."
             }
         }
         stage('Test') {
             steps {
                 echo "Testing the application..."
+                dir('07-jenkins/') {
+                    sh "docker run node_app npm test"
+                }
             }
         }
         stage('Deploy') {
