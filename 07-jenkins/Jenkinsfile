@@ -23,7 +23,7 @@ pipeline {
                 echo "Deploying the application..."
                 dir('07-jenkins/') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "docker login -u ${env.USER} -p ${env.PASS}"
+                        sh "docker login -u ${env.USER} -p '${env.PASS}'"
                         sh "docker push ppr88/devops-bootcamp-module08:1.0"
                     }
                 } 
