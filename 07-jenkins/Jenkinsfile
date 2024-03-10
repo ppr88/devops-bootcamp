@@ -13,11 +13,14 @@ pipeline {
                     }
                     echo "new app version is: ${env.APP_VERSION}"
 
-                    // Commit the changes with the new version number
-                    sh "git remote -v"
-                    sh "git add package.json package-lock.json"
-                    sh "git commit -m 'Bump version to ${env.APP_VERSION}'"
-                    sh "git push origin HEAD:main"
+                    withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
+                        // Commit the changes with the new version number
+                        sh "git remote set-url origin https://${GITHUB_PAT}@github.com/ppr88/devops-bootcamp"
+                        sh "git remote -v"
+                        sh "git add package.json package-lock.json"
+                        sh "git commit -m 'Bump version to ${env.APP_VERSION}'"
+                        sh "git push origin HEAD:main"
+                    }
                 }
             }
         }
