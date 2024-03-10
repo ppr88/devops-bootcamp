@@ -9,8 +9,7 @@ pipeline {
                     script {
                         // Bump version in package.json, capture and format the new application version 
                         env.APP_VERSION = sh(script: "npm version patch", returnStdout: true).trim()
-                        env.APP_VERSION.substring(1)
-                        env.APP_VERSION = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
+                        env.APP_VERSION = "${env.APP_VERSION.substring(1)}-${env.BUILD_NUMBER}"
                     }
                     echo "new app version is: ${env.APP_VERSION}"
                 }
