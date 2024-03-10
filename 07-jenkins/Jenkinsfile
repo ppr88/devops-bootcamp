@@ -12,9 +12,14 @@ pipeline {
                 dir('07-jenkins/app/') {
                     script {
                         // Capture the new application version 
-                        env.APP_VERSION = sh(script: "npm version patch", returnStdout: true).trim()
+                        def versionOutput = sh(script: "npm version patch", returnStdout: true).trim()
+                        echo "Version command output (inside): '${versionOutput}'"
+                        env.APP_VERSION = versionOutput
+                        echo "APP_VERSION value (inside): '${env.APP_VERSION}'"
+
+
                     }
-                    echo "new app version is: ${env.APP_VERSION}"                
+                    echo "new app version is: ${env.APP_VERSION}"
                 }
             }
         }
