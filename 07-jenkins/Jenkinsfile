@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_VERSION = null
+        APP_VERSION = ''
     }
 
     stages {
