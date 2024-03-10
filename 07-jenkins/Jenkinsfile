@@ -12,6 +12,12 @@ pipeline {
                         env.APP_VERSION = "${env.APP_VERSION.substring(1)}-${env.BUILD_NUMBER}"
                     }
                     echo "new app version is: ${env.APP_VERSION}"
+
+                    // Commit the changes with the new version number
+                    sh "git add package.json package-lock.json"
+                    sh "git commit -m 'Bump version to ${env.APP_VERSION}'"
+                    sh "git push"
+
                 }
             }
         }
