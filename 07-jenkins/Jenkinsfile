@@ -17,9 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building the application..."
-                echo "app version in build step is: ${env.APP_VERSION}"
                 dir('07-jenkins/') {
-                    sh "docker build -t ppr88/devops-bootcamp-module08:1.0 ."
+                    sh "docker build -t ppr88/devops-bootcamp-module08:${env.APP_VERSION} ."
                 }
             }
         }
@@ -37,7 +36,7 @@ pipeline {
                 dir('07-jenkins/') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh "echo '${env.PASS}' | docker login -u '${env.USER}' --password-stdin"
-                        sh "docker push ppr88/devops-bootcamp-module08:1.0"
+                        sh "docker push ppr88/devops-bootcamp-module08:${env.APP_VERSION}"
                     }
                 } 
             }
