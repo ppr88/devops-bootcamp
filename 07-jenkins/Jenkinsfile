@@ -16,8 +16,7 @@ pipeline {
                     // Commit the changes with the new version number
                     sh "git add package.json package-lock.json"
                     sh "git commit -m 'Bump version to ${env.APP_VERSION}'"
-                    sh "git push"
-
+                    sh "git push origin HEAD:main"
                 }
             }
         }
