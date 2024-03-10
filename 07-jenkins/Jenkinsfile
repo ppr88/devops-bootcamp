@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        APP_VERSION = "test"
-    }
-
     stages {
         stage('Bump version') {
             steps {
@@ -15,7 +11,7 @@ pipeline {
                         // Capture the new application version 
                         def versionOutput = sh(script: "npm version patch", returnStdout: true).trim()
                         echo "Version command output (inside): '${versionOutput}'"
-                        ${env.APP_VERSION} = versionOutput
+                        env.APP_VERSION = versionOutput
                         echo "APP_VERSION value (inside): '${env.APP_VERSION}'"
 
 
