@@ -9,7 +9,7 @@ pipeline {
         stage('Bump version') {
             steps {
                 echo "Bumping the application version..."
-                dir('07-jenkins/') {
+                dir('07-jenkins/app/') {
                     script {
                         // Capture the new application version 
                         APP_VERSION = sh(script: "npm version patch", returnStdout: true).trim()
