@@ -7,14 +7,8 @@ pipeline {
                 echo "Bumping the application version..."
                 dir('07-jenkins/app/') {
                     script {
-                        echo "APP_VERSION value (before): '${env.APP_VERSION}'"
                         // Capture the new application version 
-                        def versionOutput = sh(script: "npm version patch", returnStdout: true).trim()
-                        echo "Version command output (inside): '${versionOutput}'"
-                        env.APP_VERSION = versionOutput
-                        echo "APP_VERSION value (inside): '${env.APP_VERSION}'"
-
-
+                        env.APP_VERSION = sh(script: "npm version patch", returnStdout: true).trim()
                     }
                     echo "new app version is: ${env.APP_VERSION}"
                 }
@@ -23,6 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building the application..."
+                echo "app version in build step is: ${env.APP_VERSION}"
                 dir('07-jenkins/') {
                     sh "docker build -t ppr88/devops-bootcamp-module08:1.0 ."
                 }
