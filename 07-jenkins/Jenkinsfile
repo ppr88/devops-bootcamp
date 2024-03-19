@@ -31,7 +31,7 @@ pipeline {
             steps {
                 dir('07-jenkins/') {
                     script {
-                        build()
+                        build "ppr88/devops-bootcamp-module08:${env.APP_VERSION}"
                     }
                 }
             }
