@@ -1,3 +1,7 @@
+#!/user/bin/env groovy
+
+@Library('my-lib')_
+
 pipeline {
     agent any
 
@@ -16,7 +20,6 @@ pipeline {
                     withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
                         // Commit the changes with the new version number
                         sh "git remote set-url origin https://${GITHUB_PAT}@github.com/ppr88/devops-bootcamp"
-                        sh "git remote -v"
                         sh "git add package.json package-lock.json"
                         sh "git commit -m 'Bump version to ${env.APP_VERSION}'"
                         sh "git push origin HEAD:main"
@@ -26,9 +29,10 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo "Building the application..."
                 dir('07-jenkins/') {
-                    sh "docker build -t ppr88/devops-bootcamp-module08:${env.APP_VERSION} ."
+                    script {
+                        build()
+                    }
                 }
             }
         }
