@@ -38,9 +38,10 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo "Testing the application..."
                 dir('07-jenkins/') {
-                    sh "docker run node_app npm test"
+                    script {
+                        test()
+                    }
                 }
             }
         }
