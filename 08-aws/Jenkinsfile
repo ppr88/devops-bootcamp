@@ -19,16 +19,20 @@ pipeline {
         stage('build app') {
             steps {
                 echo 'building application jar...'
-                buildJar()
+                dir('08-aws/') {
+                    buildJar()
+                }
             }
         }
         stage('build image') {
             steps {
-                script {
-                    echo 'building the docker image...'
-                    buildImage(env.IMAGE_NAME)
-                    dockerLogin()
-                    dockerPush(env.IMAGE_NAME)
+                dir('08-aws/') {
+                    script {
+                        echo 'building the docker image...'
+                        buildImage(env.IMAGE_NAME)
+                        dockerLogin()
+                        dockerPush(env.IMAGE_NAME)
+                    }
                 }
             }
         } 
