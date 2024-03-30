@@ -23,6 +23,11 @@ pipeline {
             steps {
                 script {
                     echo "Deploying the application..."
+                    
+                    def dockerCmd = "docker run -p 3000:3000 -d ppr88/devops-bootcamp-module08:1.0.10-46"
+                    sshagent(['ec2-key']) {
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@35.180.196.85 ${dockerCmd}"
+                    }
                 }
             }
         }               
