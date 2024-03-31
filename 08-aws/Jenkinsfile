@@ -71,12 +71,12 @@ pipeline {
                     echo 'commiting version bump to Github...'
 
                     withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
-21   │                  // Commit the changes with the new version number
-22   │                  sh "git remote set-url origin https://${GITHUB_PAT}@github.com/ppr88/devops-bootcamp"
-23   │                  sh "git add 08-aws/pom.xml"
-24   │                  sh "git commit -m 'Bump version'"
-25   │                  sh "git push origin HEAD:${BRANCH_NAME}"
-26   │              }
+                        // Commit the changes with the new version number
+                        sh "git remote set-url origin https://${GITHUB_PAT}@github.com/ppr88/devops-bootcamp"
+                        sh "git add 08-aws/pom.xml"
+                        sh "git commit -m 'Bump version'"
+                        sh "git push origin HEAD:${BRANCH_NAME}"
+                    }
                 }
             }               
         }
