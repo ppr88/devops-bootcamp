@@ -12,10 +12,19 @@ pipeline {
     tools {
         maven 'maven-3.9'
     }
-    environment {
-        IMAGE_NAME = 'ppr88/devops-bootcamp-module08:java-maven-1.1'
-    }
     stages {
+        stage('increment version') {
+            steps {
+                echo 'incrementing app version...'
+                dir('08-aws/') {
+                    script {
+                        def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                        def version = matcher[0][1]
+                        env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                    }
+                }
+            }
+        }
         stage('build app') {
             steps {
                 echo 'building application jar...'
