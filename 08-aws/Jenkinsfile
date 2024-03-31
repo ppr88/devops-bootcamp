@@ -12,10 +12,23 @@ pipeline {
     tools {
         maven 'maven-3.9'
     }
-    environment {
-        IMAGE_NAME = 'ppr88/devops-bootcamp-module08:java-maven-1.0'
-    }
     stages {
+        stage('increment version') {
+            steps {
+                echo 'incrementing app version...'
+                dir('08-aws/') {
+                    script {
+                        sh "mvn build-helper:parse-version versions:set \
+                            -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} versions:commit"
+                        def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                        def version = matcher[0][1]
+                        env.APP_VERSION = version
+                        env.IMAGE_NAME = "ppr88/devops-bootcamp-module08:java-maven-$version-$BUILD_NUMBER"
+                        echo "new image name: ${IMAGE_NAME}"
+                    }
+                }
+            }
+        }
         stage('build app') {
             steps {
                 echo 'building application jar...'
@@ -40,9 +53,29 @@ pipeline {
             steps {
                 script {
                     echo 'deploying docker image to EC2...'
-                    def dockerCmd = "docker run -p 8080:8080 -d ${IMAGE_NAME}"
+                    
+                    def remoteServer = "ec2-user@35.180.196.85"
+                    def setEnvVarCmd = "export APP_IMAGE=${IMAGE_NAME}"
+                    def dockerComposeCmd = "docker-compose -f docker-compose.yaml up --detach"
+                    
                     sshagent(['ec2-key']) {
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@35.180.196.85 ${dockerCmd}"
+                        sh "scp 08-aws/docker-compose.yaml ${remoteServer}:/home/ec2-user"
+                        sh "ssh -o StrictHostKeyChecking=no ${remoteServer} '${setEnvVarCmd} && ${dockerComposeCmd}'"
+                    }
+                }
+            }               
+        }
+        stage("commit version bump") {
+            steps {
+                script {
+                    echo 'commiting version bump to Github...'
+
+                    withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_PAT')]) {
+                        // Commit the changes with the new version number
+                        sh "git remote set-url origin https://${GITHUB_PAT}@github.com/ppr88/devops-bootcamp"
+                        sh "git add 08-aws/pom.xml"
+                        sh "git commit -m 'Bump version'"
+                        sh "git push origin HEAD:${BRANCH_NAME}"
                     }
                 }
             }               

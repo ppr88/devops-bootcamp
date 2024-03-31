@@ -1,0 +1,11 @@
+services:
+  java-maven-app:
+    image: ${APP_IMAGE}
+    ports:
+      - 8080:8080
+  postgres:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=my_pwd
