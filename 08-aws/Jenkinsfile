@@ -22,7 +22,8 @@ pipeline {
                             -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} versions:commit"
                         def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
                         def version = matcher[0][1]
-                        env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                        env.IMAGE_NAME = "ppr88/devops-bootcamp-module08:java-maven-$version-$BUILD_NUMBER"
+                        echo "new image name: ${IMAGE_NAME}"
                     }
                 }
             }
